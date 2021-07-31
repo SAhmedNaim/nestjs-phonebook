@@ -52,10 +52,41 @@ export class UsersService {
         const newUser = new this.userModel({
             name, cell, age
         });
-        
+
         const result = await newUser.save();
 
         return result.id as string;
+    }
+
+    /**
+     * Update single user by Id
+     * 
+     * @param userId 
+     * @param name 
+     * @param cell 
+     * @param age 
+     */
+    async updateUser(userId: string, name: string, cell: string, age: number) {
+        const modifiedUser = await this.findUser(userId);
+
+        if(name) modifiedUser.name = name;
+        if(cell) modifiedUser.cell = cell;
+        if(age) modifiedUser.age = age;
+
+        modifiedUser.save();
+    }
+
+    /**
+     * Delete user from Database
+     * 
+     * @param userId 
+     */
+    async deleteUser(userId: string) {
+        const result = await this.userModel.deleteOne({ _id: userId }).exec();        
+
+        if(result.n === 0) {
+            throw new NotFoundException("Sorry! Unable to find the user");
+        }
     }
 
     /**
