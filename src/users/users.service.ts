@@ -41,6 +41,24 @@ export class UsersService {
     }
 
     /**
+     * Create an User to Database
+     * 
+     * @param name 
+     * @param cell 
+     * @param age 
+     * @returns 
+     */
+    async createOneUser(name: string, cell: string, age: number) {
+        const newUser = new this.userModel({
+            name, cell, age
+        });
+        
+        const result = await newUser.save();
+
+        return result.id as string;
+    }
+
+    /**
      * 
      * @param id 
      * @returns 
